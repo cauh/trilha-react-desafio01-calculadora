@@ -21,29 +21,31 @@ const App = () => {
     setCurrentNumber(prev => `${prev === '0' ? '' : prev}${num}`)
   }
 
-  const handleSumNumbers = () => {
+  const handleNumberOperations = (operation) => {
 
     if(firstNumber === '0'){
         setFirstNumber(String(currentNumber));
         setCurrentNumber('0')
-        setOperation('+')
+        setOperation(operation)
     }else {
-      const sum = Number(firstNumber) + Number(currentNumber);
-      setCurrentNumber(String(sum))
-      setOperation('')
-    }
+      switch(operation){
+        case '+':
+            setCurrentNumber(String(Number(firstNumber) + Number(currentNumber)))
+          break;
+        case '-':
+            setCurrentNumber(String(Number(firstNumber) - Number(currentNumber)))
+          break;
+        case 'x':
+          setCurrentNumber(String(Number(firstNumber) * Number(currentNumber)))
+          break;
+        case '/':
+          setCurrentNumber(String(Number(firstNumber) / Number(currentNumber)))
+          break;
+        default: 
+          break;
+      }
 
-  }
 
-  const handleMinusNumbers = () => {
-
-    if(firstNumber === '0'){
-        setFirstNumber(String(currentNumber));
-        setCurrentNumber('0')
-        setOperation('-')
-    }else {
-      const sum = Number(firstNumber) - Number(currentNumber);
-      setCurrentNumber(String(sum))
       setOperation('')
     }
 
@@ -52,17 +54,23 @@ const App = () => {
   const handleEquals = () => {
 
     if(firstNumber !== '0' && operation !== '' && currentNumber !== '0'){
-        switch(operation){
-          case '+':
-            handleSumNumbers();
-            break;
-          case '-':
-            handleMinusNumbers();
-            break;
-          default: 
-            break;
-        }
-    }
+      switch(operation){
+        case '+':
+          handleNumberOperations('+');
+          break;
+        case '-':
+          handleNumberOperations('-');
+          break;
+        case 'x':
+          handleNumberOperations('x');
+          break;
+        case '/':
+          handleNumberOperations('/');
+          break;
+        default: 
+          break;
+      }
+  }
 
   }
 
@@ -71,8 +79,8 @@ const App = () => {
       <Content>
         <Input value={currentNumber}/>
         <Row>
-          <Button label="x"/>
-          <Button label="/"/>
+          <Button label="x" onClick={() => handleNumberOperations('x')}/>
+          <Button label="/" onClick={() => handleNumberOperations('/')}/>
           <Button label="c" onClick={handleOnClear}/>
           <Button label="."/>
         </Row>
@@ -80,13 +88,13 @@ const App = () => {
           <Button label="7" onClick={() => handleAddNumber('7')}/>
           <Button label="8" onClick={() => handleAddNumber('8')}/>
           <Button label="9" onClick={() => handleAddNumber('9')}/>
-          <Button label="-" onClick={handleMinusNumbers}/>
+          <Button label="-" onClick={() => handleNumberOperations('-')}/>
         </Row>
         <Row>
           <Button label="4" onClick={() => handleAddNumber('4')}/>
           <Button label="5" onClick={() => handleAddNumber('5')}/>
           <Button label="6" onClick={() => handleAddNumber('6')}/>
-          <Button label="+" onClick={handleSumNumbers}/>
+          <Button label="+" onClick={() => handleNumberOperations('+')}/>
         </Row>
         <Row>
           <Button label="1" onClick={() => handleAddNumber('1')}/>
